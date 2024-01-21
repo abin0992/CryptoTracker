@@ -12,7 +12,7 @@ import SwiftData
 struct CryptoTrackerApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
+            Item.self
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
@@ -23,9 +23,25 @@ struct CryptoTrackerApp: App {
         }
     }()
 
+    @StateObject private var homeViewModel = HomeCryptoListViewModel()
+
+    init() {
+        DependencyManager.registerServices()
+
+        UINavigationBar.appearance().largeTitleTextAttributes = [
+            .foregroundColor: UIColor(Color.theme.accent)
+        ]
+        UINavigationBar.appearance().titleTextAttributes = [
+            .foregroundColor: UIColor(Color.theme.accent)
+        ]
+        UINavigationBar.appearance().tintColor = UIColor(Color.theme.accent)
+        UITableView.appearance().backgroundColor = UIColor.clear
+    }
+
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(homeViewModel)
         }
         .modelContainer(sharedModelContainer)
     }
